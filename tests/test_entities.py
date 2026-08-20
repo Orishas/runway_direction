@@ -98,10 +98,55 @@ def _fixed_now(monkeypatch) -> None:
         )
 
 
-def test_object_ids_are_prefixed_per_airport() -> None:
-    """Entity ids stay unique and readable across several airports."""
-    assert suggested_object_id("EDDF", "forecast") == "eddf_forecast"
-    assert suggested_object_id("EGLL", "forecast") == "egll_forecast"
+def test_object_ids_do_not_repeat_the_airport() -> None:
+    """Home Assistant already prefixes the device name.
+
+    Including the ICAO here produced ids like
+    ``sensor.stuttgart_airport_edds_forecast``.
+    """
+    assert suggested_object_id("forecast") == "forecast"
+
+
+def test_slot_times_are_reported_in_local_time() -> None:
+    """Sources report in different zones; attributes must agree with clocks.
+
+    The worldwide source timestamps in UTC, the German one in local time. Left
+    unconverted, a slot starting 17:00 local was published as "from": "15:00".
+    """
+    slot = RunwaySlot(
+        start=datetime(2026, 8, 20, 15, 0, tzinfo=timezone.utc),
+        end=datetime(2026, 8, 20, 21, 0, tzinfo=timezone.utc),
+        source=SOURCE_RWDF,
+        runway="25",
+    )
+
+    published = slot.as_dict()
+    local_start = slot.start.astimezone()
+
+    assert published["from"] == local_start.strftime("%H:%M")
+    assert published["start"] == local_start.isoformat()
+    assert published["date"] == local_start.date().isoformat()
+
+
+def test_axis_only_slots_name_the_runways_they_could_mean() -> None:
+    """"east" tells a user nothing; the runway ends do."""
+    single = RunwaySlot(
+        start=NOW,
+        end=NOW + timedelta(hours=3),
+        source=SOURCE_BRP,
+        runway_options=("07",),
+        direction_text="east",
+    )
+    several = RunwaySlot(
+        start=NOW,
+        end=NOW + timedelta(hours=3),
+        source=SOURCE_BRP,
+        runway_options=("25C", "25L", "25R"),
+        direction_text="west",
+    )
+
+    assert single.label == "07"
+    assert several.label == "25C/25L/25R"
 
 
 def test_noise_is_on_when_a_selected_runway_is_in_use() -> None:

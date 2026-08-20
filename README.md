@@ -28,8 +28,8 @@ and 09L while the airport in reality runs westerly almost throughout.
 So the integration carries the uncertainty rather than hiding it:
 
 - every slot keeps the source it came from
-- every slot keeps its confidence, and `binary_sensor.<icao>_forecast_uncertain`
-  turns on below a threshold you choose
+- every slot keeps its confidence, and the `forecast_uncertain`
+  binary sensor turns on below a threshold you choose
 - where a source cannot support a direction at all — a tendency near zero, or
   wind below 3 kn, at which point airports follow their preferred direction
   rather than the wind — the forecast shows a gap instead of a guess
@@ -44,20 +44,24 @@ that one for Frankfurt, and this one for everywhere else.
 
 ## Entities
 
-One device and one set of entities per configured airport, prefixed with the
-ICAO code.
+One device and one set of entities per configured airport. Home Assistant
+prefixes the entity ids with the airport name, so Stuttgart gets
+`sensor.stuttgart_airport_forecast` and so on.
 
 | Entity | State | Purpose |
 | --- | --- | --- |
-| `sensor.<icao>_current_runway` | e.g. `25C` | Runway expected to be in use now |
-| `sensor.<icao>_forecast` | e.g. `07C` | Next runway, with all slots as attributes |
-| `sensor.<icao>_confidence` | 0-100 | Confidence of the current forecast |
-| `sensor.<icao>_headwind` | km/h | Headwind on the runway in use |
-| `sensor.<icao>_crosswind` | km/h | Crosswind on the runway in use |
-| `sensor.<icao>_next_aircraft_noise` | timestamp | When a runway you selected is next in use |
-| `binary_sensor.<icao>_aircraft_noise` | `on` / `off` | A runway you selected is in use now |
-| `binary_sensor.<icao>_aircraft_noise_warning` | `on` / `off` | Noise is forecast within your warning window |
-| `binary_sensor.<icao>_forecast_uncertain` | `on` / `off` | Current forecast is below your confidence threshold |
+| `..._current_runway` | e.g. `25C` | Runway expected to be in use now |
+| `..._forecast` | e.g. `07C` | Next runway, with all slots as attributes |
+| `..._confidence` | 0-100 | Confidence of the current forecast |
+| `..._headwind` | km/h | Headwind on the runway in use |
+| `..._crosswind` | km/h | Crosswind on the runway in use |
+| `..._next_aircraft_noise` | timestamp | When a runway you selected is next in use |
+| `binary_sensor...._aircraft_noise` | `on` / `off` | A runway you selected is in use now |
+| `binary_sensor...._aircraft_noise_warning` | `on` / `off` | Noise is forecast within your warning window |
+| `binary_sensor...._forecast_uncertain` | `on` / `off` | Current forecast is below your confidence threshold |
+
+Where a source only resolves an axis rather than a single runway, the state
+names every runway end that fits, such as `25C/25L/25R`.
 
 The `slots` attribute on the forecast sensor holds the merged timeline:
 
@@ -166,18 +170,18 @@ automation:
   - alias: "Aircraft noise expected, and the forecast is worth trusting"
     trigger:
       - platform: state
-        entity_id: binary_sensor.eddm_aircraft_noise_warning
+        entity_id: binary_sensor.munich_airport_aircraft_noise_warning
         to: "on"
     condition:
       - condition: state
-        entity_id: binary_sensor.eddm_forecast_uncertain
+        entity_id: binary_sensor.munich_airport_forecast_uncertain
         state: "off"
     action:
       - service: notify.mobile_app_phone
         data:
           message: >-
             Aircraft noise expected in
-            {{ state_attr('binary_sensor.eddm_aircraft_noise_warning', 'starts_in_minutes') }}
+            {{ state_attr('binary_sensor.munich_airport_aircraft_noise_warning', 'starts_in_minutes') }}
             minutes.
 ```
 

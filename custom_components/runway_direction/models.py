@@ -97,14 +97,31 @@ class RunwaySlot:
             return self.runway in runways
         return any(end in runways for end in self.runway_options)
 
+    @property
+    def label(self) -> str | None:
+        """Return the most specific runway description available.
+
+        Sources that only resolve an axis have no single runway; naming the
+        ends that fit is more useful than repeating "east".
+        """
+        if self.runway:
+            return self.runway
+        if self.runway_options:
+            return "/".join(self.runway_options)
+        return self.direction_text
+
     def as_dict(self) -> dict[str, Any]:
         """Return the Home Assistant attribute representation."""
+        # Sources report in different time zones; attributes are local so that
+        # "from"/"to" match what a dashboard shows.
+        local_start = self.start.astimezone()
+        local_end = self.end.astimezone()
         values: dict[str, Any] = {
-            "start": self.start.isoformat(),
-            "end": self.end.isoformat(),
-            "from": self.start.strftime("%H:%M"),
-            "to": self.end.strftime("%H:%M"),
-            "date": self.start.date().isoformat(),
+            "start": local_start.isoformat(),
+            "end": local_end.isoformat(),
+            "from": local_start.strftime("%H:%M"),
+            "to": local_end.strftime("%H:%M"),
+            "date": local_start.date().isoformat(),
             "source": self.source,
         }
         for key, value in (

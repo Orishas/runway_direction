@@ -5,7 +5,7 @@
  * as a Lovelace resource. No build step, no dependencies.
  */
 
-const CARD_VERSION = "0.1.0";
+const CARD_VERSION = "0.1.1";
 const MINUTE_MS = 60000;
 const DAY_MS = 86400000;
 
@@ -629,7 +629,10 @@ class RunwayDirectionCard extends HTMLElement {
     }
     const label =
       showLabel && segment.width >= 14 && interval.kind !== "gap"
-        ? interval.runway || interval.direction || ""
+        ? interval.runway ||
+          (interval.runwayOptions || []).join("/") ||
+          interval.direction ||
+          ""
         : "";
     return `<div class="${classes.join(" ")}" style="flex: 0 0 ${segment.width.toFixed(
       3,

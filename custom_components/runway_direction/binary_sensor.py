@@ -79,10 +79,7 @@ class BaseBinarySensor(
     @property
     def suggested_object_id(self) -> str:
         """Return a stable, language-independent entity object id."""
-        return suggested_object_id(
-            self.coordinator.airport.icao,
-            self.entity_description.key,
-        )
+        return suggested_object_id(self.entity_description.key)
 
     @property
     def _noise_runways(self) -> tuple[str, ...]:

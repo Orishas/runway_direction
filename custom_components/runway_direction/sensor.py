@@ -57,9 +57,7 @@ class RunwaySensorEntityDescription(SensorEntityDescription):
 
 
 def _current_value(data: RunwayDirectionData, current: RunwaySlot | None) -> Any:
-    if current is None:
-        return None
-    return current.runway or current.direction_text
+    return current.label if current else None
 
 
 def _current_attrs(
@@ -87,9 +85,7 @@ def _current_attrs(
 
 def _forecast_value(data: RunwayDirectionData, current: RunwaySlot | None) -> Any:
     upcoming = data.next_slot_after(dt_util.now())
-    if upcoming is None:
-        return None
-    return upcoming.runway or upcoming.direction_text
+    return upcoming.label if upcoming else None
 
 
 def _forecast_attrs(
@@ -219,10 +215,7 @@ class RunwayDirectionSensor(
     @property
     def suggested_object_id(self) -> str:
         """Return a stable, language-independent entity object id."""
-        return suggested_object_id(
-            self.coordinator.airport.icao,
-            self.entity_description.key,
-        )
+        return suggested_object_id(self.entity_description.key)
 
     @property
     def available(self) -> bool:
@@ -279,10 +272,7 @@ class NextAircraftNoiseSensor(
     @property
     def suggested_object_id(self) -> str:
         """Return a stable, language-independent entity object id."""
-        return suggested_object_id(
-            self.coordinator.airport.icao,
-            "next_aircraft_noise",
-        )
+        return suggested_object_id("next_aircraft_noise")
 
     @property
     def available(self) -> bool:

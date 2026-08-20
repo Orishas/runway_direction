@@ -74,9 +74,13 @@ def device_info(airport: AirportInfo) -> dict[str, Any]:
     }
 
 
-def suggested_object_id(icao: str, key: str) -> str:
-    """Return a stable, language-independent entity object id."""
-    return f"{icao.lower()}_{key}"
+def suggested_object_id(key: str) -> str:
+    """Return a stable, language-independent entity object id.
+
+    Home Assistant prefixes this with the device name, so repeating the ICAO
+    code here would produce ids like ``stuttgart_airport_edds_forecast``.
+    """
+    return key
 
 
 def next_noise_slot(
