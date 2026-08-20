@@ -1,0 +1,38 @@
+{
+  "entity": {
+    "sensor": {
+      "current_runway": {
+        "default": "mdi:airport"
+      },
+      "forecast": {
+        "default": "mdi:calendar-clock"
+      },
+      "confidence": {
+        "default": "mdi:progress-question"
+      },
+      "headwind": {
+        "default": "mdi:weather-windy"
+      },
+      "crosswind": {
+        "default": "mdi:weather-windy-variant"
+      },
+      "next_aircraft_noise": {
+        "default": "mdi:calendar-alert"
+      }
+    },
+    "binary_sensor": {
+      "aircraft_noise": {
+        "default": "mdi:airplane-alert"
+      },
+      "aircraft_noise_warning": {
+        "default": "mdi:airplane-clock"
+      },
+      "forecast_uncertain": {
+        "default": "mdi:help-rhombus-outline"
+      }
+    }
+  },
+  "services": {
+    "refresh": "mdi:refresh"
+  }
+}

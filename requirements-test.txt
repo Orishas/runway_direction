@@ -1,0 +1,5 @@
+# The integration itself needs no third-party packages; these are only for
+# running the test suite without a Home Assistant installation.
+aiohttp
+pytest
+voluptuous

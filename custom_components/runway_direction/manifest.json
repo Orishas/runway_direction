@@ -1,0 +1,18 @@
+{
+  "domain": "runway_direction",
+  "name": "Runway Direction",
+  "codeowners": [
+    "@Orishas"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "frontend",
+    "http"
+  ],
+  "documentation": "https://github.com/Orishas/runway_direction",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/Orishas/runway_direction/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

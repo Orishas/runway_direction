@@ -1,0 +1,92 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Find an airport",
+        "description": "Search by ICAO or IATA code, airport or city name. Leave it empty to list the airports nearest to your home.",
+        "data": {
+          "search": "Search"
+        }
+      },
+      "select": {
+        "title": "Select an airport",
+        "data": {
+          "airport": "Airport"
+        }
+      },
+      "settings": {
+        "title": "Noise settings for {airport}",
+        "description": "Pick the runway ends whose traffic is audible where you live. The forecast is derived from wind and does not know local runway usage schemes, so treat it as a tendency rather than a schedule.{official}",
+        "data": {
+          "noise_runways": "Runway ends that cause noise",
+          "warning_minutes": "Warn this many minutes in advance",
+          "min_confidence": "Treat forecasts below this confidence as uncertain"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach runwaydirectionforecast.com.",
+      "no_airports": "No airport matched that search."
+    },
+    "abort": {
+      "already_configured": "This airport is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Noise settings",
+        "data": {
+          "noise_runways": "Runway ends that cause noise",
+          "warning_minutes": "Warn this many minutes in advance",
+          "min_confidence": "Treat forecasts below this confidence as uncertain"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "current_runway": {
+        "name": "Runway in use"
+      },
+      "forecast": {
+        "name": "Forecast"
+      },
+      "confidence": {
+        "name": "Forecast confidence"
+      },
+      "headwind": {
+        "name": "Headwind"
+      },
+      "crosswind": {
+        "name": "Crosswind"
+      },
+      "next_aircraft_noise": {
+        "name": "Next aircraft noise"
+      }
+    },
+    "binary_sensor": {
+      "aircraft_noise": {
+        "name": "Aircraft noise"
+      },
+      "aircraft_noise_warning": {
+        "name": "Aircraft noise warning"
+      },
+      "forecast_uncertain": {
+        "name": "Forecast uncertain"
+      }
+    }
+  },
+  "services": {
+    "refresh": {
+      "name": "Refresh",
+      "description": "Fetches new forecast data immediately.",
+      "fields": {
+        "icao": {
+          "name": "ICAO code",
+          "description": "Refresh only this airport. Omit to refresh all of them."
+        }
+      }
+    }
+  }
+}

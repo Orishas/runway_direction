@@ -1,0 +1,7 @@
+refresh:
+  fields:
+    icao:
+      required: false
+      example: EDDF
+      selector:
+        text:

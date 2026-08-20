@@ -1,0 +1,92 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Flughafen suchen",
+        "description": "Suche nach ICAO- oder IATA-Code, Flughafen- oder Stadtname. Leer lassen, um die nächstgelegenen Flughäfen aufzulisten.",
+        "data": {
+          "search": "Suche"
+        }
+      },
+      "select": {
+        "title": "Flughafen auswählen",
+        "data": {
+          "airport": "Flughafen"
+        }
+      },
+      "settings": {
+        "title": "Lärmeinstellungen für {airport}",
+        "description": "Wähle die Bahnrichtungen, deren Verkehr bei dir hörbar ist. Die Prognose wird aus Winddaten abgeleitet und kennt keine örtlichen Bahnnutzungskonzepte — sie ist eine Tendenz, kein Fahrplan.{official}",
+        "data": {
+          "noise_runways": "Bahnrichtungen, die Lärm verursachen",
+          "warning_minutes": "Vorwarnzeit in Minuten",
+          "min_confidence": "Prognosen unterhalb dieser Konfidenz als unsicher behandeln"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "runwaydirectionforecast.com ist nicht erreichbar.",
+      "no_airports": "Kein Flughafen passt zu dieser Suche."
+    },
+    "abort": {
+      "already_configured": "Dieser Flughafen ist bereits eingerichtet."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Lärmeinstellungen",
+        "data": {
+          "noise_runways": "Bahnrichtungen, die Lärm verursachen",
+          "warning_minutes": "Vorwarnzeit in Minuten",
+          "min_confidence": "Prognosen unterhalb dieser Konfidenz als unsicher behandeln"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "current_runway": {
+        "name": "Betriebsrichtung"
+      },
+      "forecast": {
+        "name": "Prognose"
+      },
+      "confidence": {
+        "name": "Prognosesicherheit"
+      },
+      "headwind": {
+        "name": "Gegenwind"
+      },
+      "crosswind": {
+        "name": "Seitenwind"
+      },
+      "next_aircraft_noise": {
+        "name": "Nächster Fluglärm"
+      }
+    },
+    "binary_sensor": {
+      "aircraft_noise": {
+        "name": "Fluglärm"
+      },
+      "aircraft_noise_warning": {
+        "name": "Fluglärm-Vorwarnung"
+      },
+      "forecast_uncertain": {
+        "name": "Prognose unsicher"
+      }
+    }
+  },
+  "services": {
+    "refresh": {
+      "name": "Aktualisieren",
+      "description": "Holt sofort neue Prognosedaten.",
+      "fields": {
+        "icao": {
+          "name": "ICAO-Code",
+          "description": "Nur diesen Flughafen aktualisieren. Leer lassen für alle."
+        }
+      }
+    }
+  }
+}
