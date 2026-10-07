@@ -5,7 +5,7 @@
  * as a Lovelace resource. No build step, no dependencies.
  */
 
-const CARD_VERSION = "0.1.1";
+const CARD_VERSION = "0.1.2";
 const MINUTE_MS = 60000;
 const DAY_MS = 86400000;
 
